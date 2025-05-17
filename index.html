@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spin the Wheel - Memorography Captures</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            background: linear-gradient(135deg, #c3a3f1, #6414e9);
+        }
+
+        /* body {
+            height: 100vh;
+            background-image:
+                linear-gradient(rgba(195, 163, 241, 0.9), rgba(100, 20, 233, 0.9)),
+                url('finallogo.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-blend-mode: overlay;
+        } */
+        .wrapper {
+            width: 90%;
+            max-width: 34.37em;
+            max-height: 90vh;
+            background-color: #ffffff;
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 50%;
+            padding: 3em;
+            border-radius: 1em;
+            box-shadow: 0 4em 5em rgba(27, 8, 53, 0.2);
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        #wheel {
+            max-height: inherit;
+            width: inherit;
+            top: 0;
+            padding: 0;
+        }
+
+        @keyframes rotate {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        #spin-btn {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 50%;
+            height: 26%;
+            width: 26%;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 0;
+            background: radial-gradient(#fdcf3b 50%, #d88a40 85%);
+            color: #c66e16;
+            text-transform: uppercase;
+            font-size: 1.8em;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+        }
+
+        img {
+            position: absolute;
+            width: 4em;
+            top: 45%;
+            right: -6%;
+            /* filter: invert(1); */
+            /* background-color: greenyellow; */
+            /* padding: 5px; */
+            /* opacity: 0.5; */
+        }
+
+        #final-value {
+            font-size: 1.5em;
+            text-align: center;
+            margin-top: 1.5em;
+            color: #202020;
+            font-weight: 500;
+        }
+
+        @media screen and (max-width: 768px) {
+            .wrapper {
+                font-size: 12px;
+            }
+
+            img {
+                right: -5%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <h1 style="text-align: center;padding-bottom:30px;color: #8b35bc;">Memorography Captures</h1>
+
+        <div class="container">
+            <canvas id="wheel"></canvas>
+            <button id="spin-btn">Spin</button>
+            <img src="arrow.png" alt="spinner arrow" />
+        </div>
+        <div id="final-value">
+            <p>Click On The Spin Button To Start</p>
+        </div>
+    </div>
+    <!-- Chart JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.1.0/chartjs-plugin-datalabels.min.js"></script>
+    <script>
+        const wheel = document.getElementById("wheel");
+        const spinBtn = document.getElementById("spin-btn");
+        const finalValue = document.getElementById("final-value");
+
+        const rotationValues = [
+            { minDegree: 0, maxDegree: 30, value: "Sweet Deal: 25% Off!" },
+            { minDegree: 31, maxDegree: 90, value: "Half Price! 50% Off Your Order!" },
+            { minDegree: 91, maxDegree: 150, value: "6x4 Frame Free with Any Order!" },
+            { minDegree: 151, maxDegree: 210, value: "No Shipping Fees – It’s On Us!" },
+            { minDegree: 211, maxDegree: 270, value: "Buy 1 Get 1 Free – 12x18 Frame!" },
+            { minDegree: 271, maxDegree: 330, value: "Extra Savings: 10% Off!" },
+            { minDegree: 331, maxDegree: 360, value: "Sweet Deal: 25% Off!" },
+        ];
+
+        const data = [16, 16, 16, 16, 16, 16];
+        const pieColors = ["#8b35bc", "#b163da", "#8b35bc", "#b163da", "#8b35bc", "#b163da"];
+
+        let myChart = new Chart(wheel, {
+            plugins: [ChartDataLabels],
+            type: "pie",
+            data: {
+                labels: [
+                    "50% OFF",
+                    "25% OFF",
+                    "10% OFF",
+                    "B1G1\n12x18\nFrame",
+                    "Free \n Shipping",
+                    "Free\n6x4 \nFrame"
+                ],
+                datasets: [{
+                    backgroundColor: pieColors,
+                    data: data,
+                }],
+            },
+            options: {
+                responsive: true,
+                animation: { duration: 0 },
+                plugins: {
+                    tooltip: false,
+                    legend: { display: false },
+                    datalabels: {
+                        color: "#ffffff",
+                        formatter: (_, context) => context.chart.data.labels[context.dataIndex],
+                        font: { size: 18 },
+                    },
+                },
+            },
+        });
+
+        // 🔁 Check if user already spun
+        if (localStorage.getItem("wheelSpun")) {
+            spinBtn.style.display = "none";
+            alert("You’ve already used your spin!");
+            const previousOffer = localStorage.getItem("spinResult");
+            if (previousOffer) {
+                finalValue.innerHTML = `<p style="background:#8b35bc;color:white;border-radius:5px"> ${previousOffer}</p>`;
+            }
+        }
+
+        const valueGenerator = (angleValue) => {
+            for (let i of rotationValues) {
+                if (angleValue >= i.minDegree && angleValue <= i.maxDegree) {
+                    finalValue.innerHTML = `<p style="background:#8b35bc;color:white;border-radius:5px"> ${i.value}</p>`;
+                    spinBtn.style.display = "none";
+                    localStorage.setItem("wheelSpun", "true");
+                    localStorage.setItem("spinResult", i.value);
+                    break;
+                }
+            }
+        };
+
+        let count = 0;
+        let resultValue = 101;
+
+        spinBtn.addEventListener("click", () => {
+            spinBtn.disabled = true;
+            finalValue.innerHTML = `<p>Good Luck!</p>`;
+
+            let randomDegree = Math.floor(Math.random() * 360);
+
+            let rotationInterval = window.setInterval(() => {
+                myChart.options.rotation = myChart.options.rotation + resultValue;
+                myChart.update();
+
+                if (myChart.options.rotation >= 360) {
+                    count += 1;
+                    resultValue -= 5;
+                    myChart.options.rotation = 0;
+                } else if (count > 15 && Math.round(myChart.options.rotation) === randomDegree) {
+                    valueGenerator(randomDegree);
+                    clearInterval(rotationInterval);
+                    count = 0;
+                    resultValue = 101;
+                }
+            }, 10);
+        });
+    </script>
+
+
+</body>
+
+</html>
