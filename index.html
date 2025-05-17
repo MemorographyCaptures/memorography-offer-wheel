@@ -201,7 +201,7 @@
         const valueGenerator = (angleValue) => {
             for (let i of rotationValues) {
                 if (angleValue >= i.minDegree && angleValue <= i.maxDegree) {
-                    finalValue.innerHTML = `<p style="background:#8b35bc;color:white;border-radius:5px"> ${i.value}</p>`;
+                    finalValue.innerHTML = `<p style="background:#8b35bc;color:white;border-radius:5px;padding:5px"> ${i.value}</p>`;
                     spinBtn.style.display = "none";
                     localStorage.setItem("wheelSpun", "true");
                     localStorage.setItem("spinResult", i.value);
